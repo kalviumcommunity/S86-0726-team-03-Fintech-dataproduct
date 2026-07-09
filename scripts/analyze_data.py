@@ -66,11 +66,40 @@ def profile_dataset(df):
 
     print("\nProfiling completed successfully!")
 
+def enforce_data_types(df):
+    """
+    Convert columns to appropriate data types.
+    """
+
+    print("=" * 50)
+    print("DATA TYPE ENFORCEMENT")
+    print("=" * 50)
+
+    # Convert Timestamp to datetime
+    df["Timestamp"] = pd.to_datetime(
+        df["Timestamp"],
+        format="%Y-%m-%d %H:%M:%S"
+    )
+
+    # Ensure Amount is numeric
+    df["Amount (INR)"] = pd.to_numeric(
+        df["Amount (INR)"],
+        errors="coerce"
+    )
+
+    print("\nData Types After Conversion:\n")
+    print(df.dtypes)
+
+    return df
+
 
 if __name__ == "__main__":
 
     filepath = "data/raw/transactions.csv"
 
     df = ingest_csv(filepath)
-
+    df = enforce_data_types(df)
+    
+    print("\nFirst 5 Rows:\n")
+    print(df.head())
     profile_dataset(df)
