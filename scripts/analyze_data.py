@@ -66,6 +66,60 @@ def profile_dataset(df):
 
     print("\nProfiling completed successfully!")
 
+def handle_missing_values(df):
+    """
+    Detect and handle missing values using different strategies.
+    """
+
+    print("=" * 50)
+    print("MISSING VALUE DETECTION & IMPUTATION")
+    print("=" * 50)
+
+    print("\nMissing Values Before Imputation:")
+    print(df.isnull().sum())
+
+    # Loop through every column
+    for column in df.columns:
+
+        # Skip if there are no missing values
+        if df[column].isnull().sum() == 0:
+            continue
+
+        print(f"\nHandling missing values in '{column}'")
+
+        # ---------- Numerical Columns ----------
+        if pd.api.types.is_numeric_dtype(df[column]):
+
+            median = df[column].median()
+            df[column] = df[column].fillna(median)
+
+            print(f"Filled numerical column '{column}' with median ({median})")
+
+        # ---------- Datetime Columns ----------
+        elif pd.api.types.is_datetime64_any_dtype(df[column]):
+
+            df[column] = df[column].ffill()
+
+            print(f"Forward filled datetime column '{column}'")
+
+        # ---------- Categorical / Object Columns ----------
+        else:
+
+            mode = df[column].mode()
+
+            if not mode.empty:
+                df[column] = df[column].fillna(mode[0])
+
+                print(f"Filled categorical column '{column}' with mode ({mode[0]})")
+
+            else:
+                print(f"Could not determine mode for '{column}'")
+
+    print("\nMissing Values After Imputation:")
+    print(df.isnull().sum())
+
+    return df
+
 def enforce_data_types(df):
     """
     Convert columns to appropriate data types.
@@ -99,6 +153,7 @@ if __name__ == "__main__":
 
     df = ingest_csv(filepath)
     df = enforce_data_types(df)
+    df = handle_missing_values(df)
     
     print("\nFirst 5 Rows:\n")
     print(df.head())
