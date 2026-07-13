@@ -146,6 +146,84 @@ def enforce_data_types(df):
 
     return df
 
+import re
+
+def clean_text_column(series, lowercase=True, strip=True, remove_special=False, mapping=None):
+    """
+    Clean a text column.
+    """
+
+    result = series.copy()
+
+    if strip:
+        result = result.str.strip()
+
+    if lowercase:
+        result = result.str.lower()
+
+    if remove_special:
+        result = result.str.replace(r'[^a-zA-Z0-9 ]', '', regex=True)
+
+    if mapping:
+        result = result.replace(mapping)
+
+    return result
+
+def clean_string_columns(df):
+
+    print("=" * 50)
+    print("STRING CLEANING & TEXT NORMALIZATION")
+    print("=" * 50)
+
+    status_map = {
+        "success": "SUCCESS",
+        "failed": "FAILED",
+        "pending": "PENDING"
+    }
+
+    # Sender Name
+    df["Sender Name"] = clean_text_column(
+        df["Sender Name"],
+        lowercase=True,
+        strip=True,
+        remove_special=True
+    )
+
+    # Receiver Name
+    df["Receiver Name"] = clean_text_column(
+        df["Receiver Name"],
+        lowercase=True,
+        strip=True,
+        remove_special=True
+    )
+
+    # Sender UPI ID
+    df["Sender UPI ID"] = clean_text_column(
+        df["Sender UPI ID"],
+        lowercase=True,
+        strip=True
+    )
+
+    # Receiver UPI ID
+    df["Receiver UPI ID"] = clean_text_column(
+        df["Receiver UPI ID"],
+        lowercase=True,
+        strip=True
+    )
+
+    # Status
+    df["Status"] = clean_text_column(
+        df["Status"],
+        lowercase=True,
+        strip=True
+    )
+
+    df["Status"] = df["Status"].replace(status_map)
+
+    print("\nString cleaning completed successfully.\n")
+
+    return df
+
 
 if __name__ == "__main__":
 
@@ -154,6 +232,7 @@ if __name__ == "__main__":
     df = ingest_csv(filepath)
     df = enforce_data_types(df)
     df = handle_missing_values(df)
+    df = clean_string_columns(df)
     
     print("\nFirst 5 Rows:\n")
     print(df.head())
