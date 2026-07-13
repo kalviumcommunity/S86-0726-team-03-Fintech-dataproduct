@@ -224,6 +224,34 @@ def clean_string_columns(df):
 
     return df
 
+def detect_outliers(df):
+    """
+    Detect outliers in Amount (INR) using the IQR method.
+    """
+
+    print("=" * 50)
+    print("OUTLIER DETECTION")
+    print("=" * 50)
+
+    Q1 = df["Amount (INR)"].quantile(0.25)
+    Q3 = df["Amount (INR)"].quantile(0.75)
+    IQR = Q3 - Q1
+
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Create a new column to flag outliers
+    df["Is_Outlier"] = (
+        (df["Amount (INR)"] < lower_bound) |
+        (df["Amount (INR)"] > upper_bound)
+    )
+
+    print(f"Lower Bound : {lower_bound:.2f}")
+    print(f"Upper Bound : {upper_bound:.2f}")
+    print(f"Outliers Found : {df['Is_Outlier'].sum()}")
+
+    return df
+
 
 if __name__ == "__main__":
 
@@ -233,6 +261,7 @@ if __name__ == "__main__":
     df = enforce_data_types(df)
     df = handle_missing_values(df)
     df = clean_string_columns(df)
+    df = detect_outliers(df)
     
     print("\nFirst 5 Rows:\n")
     print(df.head())
