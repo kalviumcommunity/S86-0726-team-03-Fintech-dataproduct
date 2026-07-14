@@ -256,9 +256,21 @@ def detect_outliers(df):
 
 if __name__ == "__main__":
 
-    filepath = "data/raw/transactions.csv"
+    transactions = ingest_csv("data/raw/transactions.csv")
+    payment_retries = ingest_csv("data/raw/payment_retries.csv")
+    bank_responses = ingest_csv("data/raw/bank_response_codes.csv")
 
-    df = ingest_csv(filepath)
+    df = transactions.merge(
+    payment_retries,
+    on="Transaction ID",
+    how="left"
+    )
+
+    df = df.merge(
+        bank_responses,
+        on="Transaction ID",
+        how="left"
+    )
     df = enforce_data_types(df)
     df = handle_missing_values(df)
     df = clean_string_columns(df)
