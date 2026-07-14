@@ -1,4 +1,5 @@
 import pandas as pd
+from validate_data import validate_data
 
 
 def ingest_csv(filepath, delimiter=",", encoding="utf-8"):
@@ -262,6 +263,7 @@ if __name__ == "__main__":
     df = handle_missing_values(df)
     df = clean_string_columns(df)
     df = detect_outliers(df)
+    df = validate_data(df)
     
     print("\nFirst 5 Rows:\n")
     print(df.head())
