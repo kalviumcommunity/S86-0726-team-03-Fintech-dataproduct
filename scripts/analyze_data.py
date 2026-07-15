@@ -1,5 +1,6 @@
 import pandas as pd
 from validate_data import validate_data
+from distribution_analysis import distribution_analysis
 
 
 def ingest_csv(filepath, delimiter=",", encoding="utf-8"):
@@ -280,3 +281,4 @@ if __name__ == "__main__":
     print("\nFirst 5 Rows:\n")
     print(df.head())
     profile_dataset(df)
+    distribution_analysis(df)
