@@ -2,6 +2,7 @@ import pandas as pd
 from validate_data import validate_data
 from distribution_analysis import distribution_analysis
 from correlation_analysis import correlation_analysis
+from groupby_analysis import groupby_analysis
 
 
 def ingest_csv(filepath, delimiter=",", encoding="utf-8"):
@@ -284,3 +285,4 @@ if __name__ == "__main__":
     profile_dataset(df)
     distribution_analysis(df)
     correlation_analysis(df)
+    groupby_analysis(df)
