@@ -3,6 +3,7 @@ from validate_data import validate_data
 from distribution_analysis import distribution_analysis
 from correlation_analysis import correlation_analysis
 from groupby_analysis import groupby_analysis
+from funnel_analysis import funnel_analysis
 
 
 def ingest_csv(filepath, delimiter=",", encoding="utf-8"):
@@ -286,3 +287,4 @@ if __name__ == "__main__":
     distribution_analysis(df)
     correlation_analysis(df)
     groupby_analysis(df)
+    funnel_analysis(df)
