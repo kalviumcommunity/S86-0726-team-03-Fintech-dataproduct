@@ -6,6 +6,11 @@ from groupby_analysis import groupby_analysis
 from funnel_analysis import funnel_analysis
 from root_cause_analysis import root_cause_analysis
 
+from database import (
+    save_to_database,
+    load_from_database,
+    check_database_schema
+)
 
 def ingest_csv(filepath, delimiter=",", encoding="utf-8"):
     """
@@ -281,12 +286,53 @@ if __name__ == "__main__":
     df = clean_string_columns(df)
     df = detect_outliers(df)
     df = validate_data(df)
+
+
+    # ==========================================
+    # SAVE CLEANED DATA TO DATABASE
+    # ==========================================
+
+    save_to_database(df)
+
+
+    # ==========================================
+    # CHECK DATABASE SCHEMA
+    # ==========================================
+
+    check_database_schema()
+
+
+    # ==========================================
+    # LOAD DATA BACK FROM DATABASE
+    # ==========================================
+
+    df_from_sql = load_from_database()
+
+    # Convert Timestamp back to datetime
+    # SQLite may load it as a string
+    df_from_sql["Timestamp"] = pd.to_datetime(
+        df_from_sql["Timestamp"],
+        errors="coerce"
+    )
     
-    print("\nFirst 5 Rows:\n")
-    print(df.head())
-    profile_dataset(df)
-    distribution_analysis(df)
-    correlation_analysis(df)
-    groupby_analysis(df)
-    funnel_analysis(df)
-    root_cause_analysis(df)
+
+
+    print("\nFirst 5 Rows Loaded From SQL Database:\n")
+    print(df_from_sql.head())
+
+
+    # ==========================================
+    # RUN ANALYSIS USING DATA FROM DATABASE
+    # ==========================================
+
+    profile_dataset(df_from_sql)
+
+    distribution_analysis(df_from_sql)
+
+    correlation_analysis(df_from_sql)
+
+    groupby_analysis(df_from_sql)
+
+    funnel_analysis(df_from_sql)
+
+    root_cause_analysis(df_from_sql)

@@ -6,9 +6,13 @@ def correlation_analysis(df):
     print("CORRELATION ANALYSIS")
     print("=" * 50)
 
-    # Select only numeric columns
-    numeric_df = df.select_dtypes(include="number")
-
+    numeric_df = df[
+    [
+        "Amount (INR)",
+        "Retry Count",
+        "Response Code"
+    ]
+]
     # Calculate correlation matrix
     corr_matrix = numeric_df.corr()
 
