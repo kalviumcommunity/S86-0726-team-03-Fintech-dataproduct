@@ -263,6 +263,22 @@ def detect_outliers(df):
 
     return df
 
+def run_sql_metric(query_file):
+    """
+    Read and execute a SQL business metric query.
+    """
+
+    from sqlalchemy import create_engine
+
+    engine = create_engine("sqlite:///analytics.db")
+
+    with open(query_file, "r", encoding="utf-8") as file:
+        query = file.read()
+
+    result = pd.read_sql(query, engine)
+    
+    return result
+
 
 if __name__ == "__main__":
 
@@ -315,7 +331,39 @@ if __name__ == "__main__":
         errors="coerce"
     )
     
+    # ==========================================
+    # SQL BUSINESS METRICS
+    # ==========================================
 
+    print("\n" + "=" * 50)
+    print("SQL BUSINESS METRICS")
+    print("=" * 50)
+
+    # Metric 1: Transaction Summary
+    transaction_summary = run_sql_metric(
+        "queries/transaction_summary.sql"
+    )
+
+    print("\nTransaction Summary:")
+    print(transaction_summary)
+
+
+    # Metric 2: Revenue by Status
+    revenue_by_status = run_sql_metric(
+        "queries/revenue_by_status.sql"
+    )
+
+    print("\nRevenue by Status:")
+    print(revenue_by_status)
+
+
+    # Metric 3: Failure Reasons
+    failure_reasons = run_sql_metric(
+        "queries/failure_reasons.sql"
+    )
+
+    print("\nFailure Reasons:")
+    print(failure_reasons)
 
     print("\nFirst 5 Rows Loaded From SQL Database:\n")
     print(df_from_sql.head())
