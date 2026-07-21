@@ -149,6 +149,27 @@ The project currently performs the following operations:
 
 ---
 
+## SQL Analysis
+
+SQL is used to query and analyze the transaction data stored in the project database.
+
+The current SQL analysis includes:
+
+- Querying transaction records using SQL
+- Filtering transactions based on payment status
+- Calculating total transaction amounts
+- Counting transactions by status
+- Calculating average transaction amounts
+- Analyzing transaction retry patterns
+- Grouping transaction data based on relevant fields
+- Using SQL aggregate functions such as `COUNT()`, `SUM()`, and `AVG()`
+- Joining transaction data with payment retry information
+- Joining transaction data with bank response code information
+- Analyzing failed transactions and their associated bank response codes
+- Identifying transaction patterns that may indicate potential payment recovery opportunities
+
+---
+
 ## Generated Features
 
 The preprocessing pipeline generates the following business features:
