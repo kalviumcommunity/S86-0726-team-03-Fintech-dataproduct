@@ -373,6 +373,16 @@ if __name__ == "__main__":
     print("\nTop Customers:")
     print(top_customers)
 
+    # Metric 5: Joining the tables
+    joined_data = run_sql_metric(
+    "queries/join_tables.sql"
+    
+    )
+    print("\n" + "=" * 60)
+    print("3-TABLE JOIN RESULT")
+    print("=" * 60)
+
+    print(joined_data.head())
 
 
     print("\nFirst 5 Rows Loaded From SQL Database:\n")
