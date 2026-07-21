@@ -365,6 +365,16 @@ if __name__ == "__main__":
     print("\nFailure Reasons:")
     print(failure_reasons)
 
+    # Metr1c 4: Top Customers
+    top_customers = run_sql_metric(
+    "queries/top_customers.sql"
+    )
+
+    print("\nTop Customers:")
+    print(top_customers)
+
+
+
     print("\nFirst 5 Rows Loaded From SQL Database:\n")
     print(df_from_sql.head())
 
