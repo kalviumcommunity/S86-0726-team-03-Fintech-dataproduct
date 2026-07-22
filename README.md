@@ -167,6 +167,7 @@ The current SQL analysis includes:
 - Joining transaction data with bank response code information
 - Analyzing failed transactions and their associated bank response codes
 - Identifying transaction patterns that may indicate potential payment recovery opportunities
+- Implementing SQL views preventing running the same query multiple times.
 
 ---
 
@@ -230,4 +231,4 @@ The preprocessing pipeline generates the following business features:
 
 **S86-0726 Team 03**
 
-**Project:** Fintech Payment Recovery Analytics
+**Project:** Fintech Payment Recovery Analytics.
