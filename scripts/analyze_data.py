@@ -279,6 +279,23 @@ def run_sql_metric(query_file):
     
     return result
 
+def create_sql_view(query_file):
+    """
+    Create a reusable SQL view in the database.
+    """
+
+    from sqlalchemy import create_engine
+
+    engine = create_engine("sqlite:///analytics.db")
+
+    with open(query_file, "r", encoding="utf-8") as file:
+        query = file.read()
+
+    with engine.begin() as connection:
+        connection.exec_driver_sql(query)
+
+    print(f"SQL view created successfully: {query_file}")
+
 
 if __name__ == "__main__":
 
@@ -309,6 +326,23 @@ if __name__ == "__main__":
     # ==========================================
 
     save_to_database(df)
+
+
+    # ==========================================
+    # CREATE SQL VIEWS 
+     # ==========================================
+
+    create_sql_view(
+    "queries/views/vw_failure_analysis.sql"
+    )
+    
+    create_sql_view(
+        "queries/views/vw_revenue_by_status.sql"
+    )
+    
+    create_sql_view(
+        "queries/views/vw_transaction_summary.sql"
+    )
 
 
     # ==========================================
