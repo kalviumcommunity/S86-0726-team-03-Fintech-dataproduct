@@ -373,6 +373,14 @@ if __name__ == "__main__":
     print("\nTop Customers:")
     print(top_customers)
 
+    #Metric - Optimized Failure Analysis
+    optimized_failure_analysis = run_sql_metric(
+    "queries/optimized_failure_analysis.sql"
+    )
+
+    print("\nOptimized Failure Analysis:")
+    print(optimized_failure_analysis)
+
     # Metric 5: Joining the tables
     joined_data = run_sql_metric(
     "queries/join_tables.sql"
