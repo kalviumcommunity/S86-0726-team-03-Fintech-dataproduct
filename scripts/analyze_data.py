@@ -303,31 +303,50 @@ if __name__ == "__main__":
     payment_retries = ingest_csv("data/raw/payment_retries.csv")
     bank_responses = ingest_csv("data/raw/bank_response_codes.csv")
 
-    df = transactions.merge(
-    payment_retries,
-    on="Transaction ID",
-    how="left"
-    )
+    transactions = enforce_data_types(transactions)
+    transactions = handle_missing_values(transactions)
+    transactions = clean_string_columns(transactions)
+    transactions = detect_outliers(transactions)
+    transactions = validate_data(transactions)
 
-    df = df.merge(
-        bank_responses,
-        on="Transaction ID",
-        how="left"
-    )
-    df = enforce_data_types(df)
-    df = handle_missing_values(df)
-    df = clean_string_columns(df)
-    df = detect_outliers(df)
-    df = validate_data(df)
-
-
-    # ==========================================
-    # SAVE CLEANED DATA TO DATABASE
+ # ==========================================
+    # CLEAN PAYMENT RETRIES
     # ==========================================
 
-    save_to_database(df)
+    payment_retries["Retry Count"] = pd.to_numeric(
+        payment_retries["Retry Count"],
+        errors="coerce"
+    )
 
+    payment_retries["Retry Count"] = payment_retries[
+        "Retry Count"
+    ].fillna(0)
 
+    # ==========================================
+    # CLEAN BANK RESPONSE CODES
+    # ==========================================
+
+    bank_responses["Response Code"] = (
+        bank_responses["Response Code"]
+        .astype(str)
+        .str.strip()
+    )
+
+    bank_responses["Response Description"] = (
+        bank_responses["Response Description"]
+        .astype(str)
+        .str.strip()
+    )
+
+    # ==========================================
+    # SAVE ALL CLEANED TABLES TO DATABASE
+    # ==========================================
+
+    save_to_database(
+        transactions,
+        payment_retries,
+        bank_responses
+    )
     # ==========================================
     # CREATE SQL VIEWS 
      # ==========================================
