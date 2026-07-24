@@ -5,6 +5,7 @@ from correlation_analysis import correlation_analysis
 from groupby_analysis import groupby_analysis
 from funnel_analysis import funnel_analysis
 from root_cause_analysis import root_cause_analysis
+from failure_amount_distribution import failure_amount_distribution
 
 from database import (
     save_to_database,
@@ -465,3 +466,7 @@ if __name__ == "__main__":
     funnel_analysis(df_from_sql)
 
     root_cause_analysis(df_from_sql)
+
+    failure_amount_distribution(df_from_sql)
+
+    
